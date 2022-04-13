@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_nav"
+    app:startDestination="@id/recetasFragment">
+
+    <fragment
+        android:id="@+id/recetasFragment"
+        android:name="com.smartsoft.foodymvvm.RecetasFragment"
+        android:label="Recetas"
+        tools:layout="@layout/fragment_recetas" />
+    <fragment
+        android:id="@+id/recetasFavoritasFragment"
+        android:name="com.smartsoft.foodymvvm.RecetasFavoritasFragment"
+        android:label="Favoritas"
+        tools:layout="@layout/fragment_recetas_favoritas" />
+    <fragment
+        android:id="@+id/foodJokerFragment"
+        android:name="com.smartsoft.foodymvvm.FoodJokerFragment"
+        android:label="Joker"
+        tools:layout="@layout/fragment_food_joker" />
+</navigation>
