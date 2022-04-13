@@ -4,5 +4,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="str_recetas">Recetas</string>
     <string name="str_recetas_favoritas">Recetas favoritas</string>
-    <string name="str_food_joker">Food joker</string>
+    <string name="str_food_joker">Joker</string>
+    <string name="str_sin_conexi_n_a_internet">Sin conexión a internet</string>
 </resources>
