@@ -11,7 +11,7 @@
         android:label="Recetas"
         tools:layout="@layout/fragment_recetas" />
     <fragment
-        android:id="@+id/recetasFavoritasFragment"
+        android:id="@+id/favoritasFragment"
         android:name="com.smartsoft.foodymvvm.RecetasFavoritasFragment"
         android:label="Favoritas"
         tools:layout="@layout/fragment_recetas_favoritas" />
