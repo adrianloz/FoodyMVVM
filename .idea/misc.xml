@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Proyectos Android/FoodyMVVM/app/src/main/res/layout/activity_main.xml" value="0.18645833333333334" />
+        <entry key="..\:/Proyectos Android/FoodyMVVM/app/src/main/res/layout/card_recetas_layout.xml" value="0.5" />
+        <entry key="..\:/Proyectos Android/FoodyMVVM/app/src/main/res/layout/fragment_recetas.xml" value="0.5" />
+        <entry key="..\:/Proyectos Android/FoodyMVVM/app/src/main/res/layout/placeholder_row_layout.xml" value="0.5" />
+        <entry key="..\:/Proyectos Android/FoodyMVVM/app/src/main/res/menu/bottom_nav_menu.xml" value="0.2552083333333333" />
         <entry key="..\:/trabajo-smart/Proyectos/FoodyMVVM/app/src/main/res/layout/activity_main.xml" value="0.18645833333333334" />
         <entry key="..\:/trabajo-smart/Proyectos/FoodyMVVM/app/src/main/res/layout/fragment_food_joker.xml" value="0.18645833333333334" />
         <entry key="..\:/trabajo-smart/Proyectos/FoodyMVVM/app/src/main/res/layout/fragment_recetas.xml" value="0.18645833333333334" />
