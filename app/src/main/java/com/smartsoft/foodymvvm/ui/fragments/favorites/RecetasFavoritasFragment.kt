@@ -1,19 +1,20 @@
-package com.smartsoft.foodymvvm
+package com.smartsoft.foodymvvm.ui.fragments.favorites
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.smartsoft.foodymvvm.R
 
-
-class FoodJokerFragment : Fragment() {
+class RecetasFavoritasFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_food_joker, container, false)
+        return inflater.inflate(R.layout.fragment_recetas_favoritas, container, false)
     }
+
 }
