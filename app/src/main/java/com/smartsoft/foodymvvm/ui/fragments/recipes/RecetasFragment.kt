@@ -21,17 +21,13 @@ class RecetasFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_recetas, container, false)
         binding = FragmentRecetasBinding.bind(view)
-        Handler(Looper.getMainLooper()).postDelayed({
-            showData()
-        },5000)
-
+        showData()
         return binding.root
     }
 
     private fun showData() {
-       binding.viewLoading.isVisible = false
-       binding.viewControler.isVisible = true
-        binding.recyclerViewRecetas.hideShimmer()
+
+        binding.recyclerViewRecetas.showShimmer()
     }
 
 }
