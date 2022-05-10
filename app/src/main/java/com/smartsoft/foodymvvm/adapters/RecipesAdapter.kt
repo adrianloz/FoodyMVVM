@@ -13,9 +13,8 @@ class RecipesAdapter : RecyclerView.Adapter<RecipesAdapter.MyViewHolder>() {
     private var recipes = emptyList<Result>()
     class MyViewHolder(private val binding: CardRecetasLayoutBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(result: Result){
-            binding.result
+            binding.result = result
             binding.executePendingBindings()//actualiza el diseño cada vez que haya un cambio en los datos
-
         }
 
         companion object{
