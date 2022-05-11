@@ -1,28 +1,31 @@
 package com.smartsoft.foodymvvm.ui.fragments.recipes
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.smartsoft.foodymvvm.viewmodels.MainViewModel
 import com.smartsoft.foodymvvm.R
 import com.smartsoft.foodymvvm.adapters.RecipesAdapter
 import com.smartsoft.foodymvvm.databinding.FragmentRecetasBinding
-import com.smartsoft.foodymvvm.utils.Constants
 import com.smartsoft.foodymvvm.utils.NetworkResult
+import com.smartsoft.foodymvvm.utils.observeOne
 import com.smartsoft.foodymvvm.viewmodels.RecipesViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RecetasFragment : Fragment() {
-    private lateinit var recipesViewModel : RecipesViewModel
+    private lateinit var recipesViewModel: RecipesViewModel
     private lateinit var mainViewModel: MainViewModel
     lateinit var binding: FragmentRecetasBinding
-    private val mAdapter by lazy {RecipesAdapter()}
+    private val mAdapter by lazy { RecipesAdapter() }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +34,7 @@ class RecetasFragment : Fragment() {
         recipesViewModel = ViewModelProvider(requireActivity())[RecipesViewModel::class.java]
 
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,11 +44,33 @@ class RecetasFragment : Fragment() {
         binding = FragmentRecetasBinding.bind(view)
 
         setupRecyclerView()
-        requestApiData()
+//        requestApiData()
+        readDatabase()
         return binding.root
     }
 
-    private fun requestApiData(){
+    private fun setupRecyclerView() {
+        binding.recyclerViewRecetas.adapter = mAdapter
+        binding.recyclerViewRecetas.layoutManager = LinearLayoutManager(requireContext())
+        showShimmerEffect()
+    }
+
+    private fun readDatabase() {
+        lifecycleScope.launch {
+            mainViewModel.readRecipes.observeOne(viewLifecycleOwner) { database ->
+                if (database.isNotEmpty()) {
+                    Log.e("RecipesFragment", "readDatabase called!")
+                    mAdapter.setData(database[0].foodRecipe)
+                    hideShimmerEffect()
+                } else {
+                    requestApiData()
+                }
+            }
+        }
+    }
+
+    private fun requestApiData() {
+        Log.e("RecipesFragment", "requestApiData called!")
         mainViewModel.getRecipes(recipesViewModel.applyQueries())
         mainViewModel.recipesResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
@@ -56,6 +82,7 @@ class RecetasFragment : Fragment() {
                 }
                 is NetworkResult.Error -> {
                     hideShimmerEffect()
+                    loadDataFromCache()
                     Toast.makeText(
                         requireContext(),
                         response.message.toString(),
@@ -69,16 +96,21 @@ class RecetasFragment : Fragment() {
         }
     }
 
-    private fun setupRecyclerView(){
-        binding.recyclerViewRecetas.adapter = mAdapter
-        binding.recyclerViewRecetas.layoutManager = LinearLayoutManager(requireContext())
-        showShimmerEffect()
+    private fun loadDataFromCache() {
+        lifecycleScope.launch {
+            mainViewModel.readRecipes.observe(viewLifecycleOwner) { database ->
+                if (database.isNotEmpty()) {
+                    mAdapter.setData(database[0].foodRecipe)
+                }
+            }
+        }
     }
+
     private fun showShimmerEffect() {
         binding.recyclerViewRecetas.showShimmer()
     }
 
-    private  fun hideShimmerEffect(){
+    private fun hideShimmerEffect() {
         binding.recyclerViewRecetas.hideShimmer()
     }
 }

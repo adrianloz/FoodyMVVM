@@ -10,6 +10,7 @@ import com.smartsoft.foodymvvm.data.database.RecipesEntity
 import com.smartsoft.foodymvvm.model.FoodRecipe
 import com.smartsoft.foodymvvm.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
@@ -19,8 +20,11 @@ class MainViewModel @Inject constructor(
     application : Application) : AndroidViewModel(application) {
 
     /** ROOM DATABASE*/
-    val readRecipe : LiveData<List<RecipesEntity>> = repositoryRecipes.local.readDatabase().asLiveData()
-
+    val readRecipes : LiveData<List<RecipesEntity>> = repositoryRecipes.local.readDatabase().asLiveData()
+    private  fun insertRecipes(recipesEntity: RecipesEntity) =
+        viewModelScope.launch(Dispatchers.IO) {
+            repositoryRecipes.local.insertRecipes(recipesEntity)
+        }
     /** RETROFIT */
     var recipesResponse : MutableLiveData<NetworkResult<FoodRecipe>> = MutableLiveData()
     fun getRecipes(queries : Map<String, String>) = viewModelScope.launch{
@@ -33,12 +37,22 @@ class MainViewModel @Inject constructor(
             try {
                 val response = repositoryRecipes.remote.getRecipes(queries)
                 recipesResponse.value = handleFoodRecipesResponse(response)
+
+                val foodRecipe = recipesResponse.value!!.data
+                if (foodRecipe != null){
+                    offlineCacheRecipes(foodRecipe)
+                }
             }catch (e:Exception){
                 recipesResponse.value = NetworkResult.Error("Recipes not found.")
             }
        }else{
            recipesResponse.value = NetworkResult.Error("No Internet Connection")
        }
+    }
+
+    private fun offlineCacheRecipes(foodRecipe: FoodRecipe) {
+        val recipesEntity = RecipesEntity(foodRecipe)
+        insertRecipes(recipesEntity)
     }
 
     private fun handleFoodRecipesResponse(response: Response<FoodRecipe>): NetworkResult<FoodRecipe>? {
